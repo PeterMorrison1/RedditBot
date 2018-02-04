@@ -15,10 +15,14 @@ def fetch_requests(reddit):
     regex_match = "(?<=[/])(?<=[r][/])([a-zA-Z0-9\_]+)"
     submission = reddit.submission(url='https://www.reddit.com/r/RedditBinge/comments/6us5kk/'
                                        'comment_in_this_thread_to_request_a_subreddit_to/')
+    with open('requests.txt', 'w') as f:
+        for top_level_comment in submission.comments:
+            match = re.findall(regex_match, top_level_comment.body)
 
-    for top_level_comment in submission.comments:
-        match = re.findall(regex_match, top_level_comment.body)
-        print(match)
+            for request in match:
+                f.write(request + "\n")
+                print("Recorded request: " + request)
+    f.close()
 
 
 def main():
