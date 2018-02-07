@@ -1,6 +1,7 @@
 import praw
 import re
 import time
+import imagehandler
 
 
 def authenticate():
@@ -22,9 +23,15 @@ def fetch_requests(reddit):
 
 
 def main():
+    url = "https://gfycat.com/ForcefulInconsequentialGoldfish"  # test var
+    subreddit = "aww"  # test var
+    title = "test"  # test var
+    # test vars above will be removed when reading directly from subreddit is implemented
+
     reddit = authenticate()
     while True:
         fetch_requests(reddit)
+        imagehandler.download_image(url, subreddit, title)
         time.sleep(60)
 
 
