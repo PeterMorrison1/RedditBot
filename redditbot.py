@@ -19,11 +19,10 @@ def fetch_requests(reddit):
 
     for top_level_comment in submission.comments:
         match = re.findall(regex_match, top_level_comment.body)
-        print(match)
 
 
 def main():
-    url = "https://gfycat.com/ForcefulInconsequentialGoldfish"  # test var
+    url = "http://google.ca/helloworld"  # test var
     subreddit = "aww"  # test var
     title = "test"  # test var
     # test vars above will be removed when reading directly from subreddit is implemented
