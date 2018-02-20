@@ -63,16 +63,22 @@ def url_handler(url):
 
 def fetch_image_url(url):
     supported_formats = [".gif", ".gifv", ".png", ".jpg", ".mp4"]
+
+    # checks if the url is to the source image or not, if not it finds the source image
     if any(s not in url for s in supported_formats):
         response = requests.get(url)
         soup = bs4.BeautifulSoup(response.content, "html.parser")
         url_split_slash = url.split('/')
 
+        # loops through all image sources in HTML and sets the correct image url
         images = soup.findAll('img')
         for image in images:
+            # imgur links in the HTML are missing the http: so don't remove this
             if "imgur" in image['src']:
                 url = "http:" + image['src']
                 break
+            # this statement looks for matching urls endings between the source and container url
+            # ex) The container url: 'http://www.livememe.com/apbp6e9'. The ending: 'apbp6e9'
             elif url_split_slash[-1] in image['src']:
                 url = image['src']
             else:

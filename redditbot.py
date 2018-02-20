@@ -22,7 +22,7 @@ def fetch_requests(reddit):
 
 
 def main():
-    url = "http://google.ca/helloworld"  # test var
+    url = "https://i.imgur.com/removed.png"  # test var
     subreddit = "aww"  # test var
     title = "test"  # test var
     # test vars above will be removed when reading directly from subreddit is implemented
@@ -30,7 +30,11 @@ def main():
     reddit = authenticate()
     while True:
         fetch_requests(reddit)
-        imagehandler.download_image(url, subreddit, title)
+        if "removed" in url:
+            print("Image was removed from imgur from post:\n" + title + "\n")
+            pass
+        else:
+            imagehandler.download_image(url, subreddit, title)
         time.sleep(60)
 
 
