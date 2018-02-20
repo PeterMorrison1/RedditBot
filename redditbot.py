@@ -1,6 +1,7 @@
 import praw
 import re
 import time
+import imagehandler
 
 
 def authenticate():
@@ -18,13 +19,22 @@ def fetch_requests(reddit):
 
     for top_level_comment in submission.comments:
         match = re.findall(regex_match, top_level_comment.body)
-        print(match)
 
 
 def main():
+    url = "https://i.imgur.com/removed.png"  # test var
+    subreddit = "aww"  # test var
+    title = "test"  # test var
+    # test vars above will be removed when reading directly from subreddit is implemented
+
     reddit = authenticate()
     while True:
         fetch_requests(reddit)
+        if "removed" in url:
+            print("Image was removed from imgur from post:\n" + title + "\n")
+            pass
+        else:
+            imagehandler.download_image(url, subreddit, title)
         time.sleep(60)
 
 
