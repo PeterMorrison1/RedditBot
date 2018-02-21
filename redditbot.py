@@ -1,7 +1,10 @@
 import praw
-import re
 import time
+<<<<<<< HEAD
 import imagehandler
+=======
+import request_history
+>>>>>>> feature/requests_to_file
 
 
 def authenticate():
@@ -13,12 +16,15 @@ def authenticate():
 
 def fetch_requests(reddit):
     # Finds subreddit strings in the top-most level comments (ex: '/r/subredditname')
-    regex_match = "(?<=[/])(?<=[r][/])([a-zA-Z0-9\_]+)"
     submission = reddit.submission(url='https://www.reddit.com/r/RedditBinge/comments/6us5kk/'
                                        'comment_in_this_thread_to_request_a_subreddit_to/')
+<<<<<<< HEAD
 
     for top_level_comment in submission.comments:
         match = re.findall(regex_match, top_level_comment.body)
+=======
+    request_history.save_requests(submission)
+>>>>>>> feature/requests_to_file
 
 
 def main():

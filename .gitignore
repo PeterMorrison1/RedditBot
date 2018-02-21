@@ -68,7 +68,7 @@ docs/_build/
 target/
 
 # PyCharm
-.idea/dictionaries/
+.idea/
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -103,3 +103,4 @@ ENV/
 # mypy
 .mypy_cache/
 praw.ini
+requests.txt
