@@ -1,10 +1,7 @@
 import praw
 import time
-<<<<<<< HEAD
 import imagehandler
-=======
 import request_history
->>>>>>> feature/requests_to_file
 
 
 def authenticate():
@@ -18,17 +15,11 @@ def fetch_requests(reddit):
     # Finds subreddit strings in the top-most level comments (ex: '/r/subredditname')
     submission = reddit.submission(url='https://www.reddit.com/r/RedditBinge/comments/6us5kk/'
                                        'comment_in_this_thread_to_request_a_subreddit_to/')
-<<<<<<< HEAD
-
-    for top_level_comment in submission.comments:
-        match = re.findall(regex_match, top_level_comment.body)
-=======
     request_history.save_requests(submission)
->>>>>>> feature/requests_to_file
 
 
 def main():
-    url = "https://i.imgur.com/removed.png"  # test var
+    url = "https://i.redd.it/y8mhykcsdeh01.jpg"  # test var
     subreddit = "aww"  # test var
     title = "test"  # test var
     # test vars above will be removed when reading directly from subreddit is implemented
@@ -36,8 +27,9 @@ def main():
     reddit = authenticate()
     while True:
         fetch_requests(reddit)
+        # skips imgur links that have a removed image
         if "removed" in url:
-            print("Image was removed from imgur from post:\n" + title + "\n")
+            print("Image was removed from imgur from post:" + title + "\n")
             pass
         else:
             imagehandler.download_image(url, subreddit, title)

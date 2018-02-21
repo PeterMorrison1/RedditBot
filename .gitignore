@@ -68,7 +68,9 @@ docs/_build/
 target/
 
 # PyCharm
-.idea/
+.idea/workspace.xml
+.idea/dictionaries
+.idea/vcs.xml
 
 # Jupyter Notebook
 .ipynb_checkpoints
