@@ -28,40 +28,38 @@ def download_image(url, subreddit, title, count):
             f.write(response.content)
             f.close()
         print("Successful download!")
+        # saves the title of the post for uploading on imgur
+        with open(file_path + "\\titles.txt", 'a') as f:
+            f.write(title + "\n")
+            f.close()
+
     except requests.exceptions.HTTPError as e:
         print(str(e))
     except FileNotFoundError:
         print("Directory does not exist")
-
-    # saves the title of the post for uploading on imgur
-    with open(file_path + "\\titles.txt", 'a') as f:
-        f.write(title + "\n")
-        f.close()
 
 
 def url_handler(url):
     # splits url to get file extension
     file_extension = ""
     url = fetch_image_url(url)
-    try:
-        url_split = url.split('.')
-        file_extension = url_split[-1]
-    # gfycat uses different format from other media used on reddit, so this makes it into a requestable url
-    except IndexError:
-        if "gfycat" in url:
-            file_extension = "mp4"
-            url_split = url.split('/')
-            url = url.replace(url_split[2], "thumbs." + url_split[2])
-            url += "-mobile." + file_extension
-        else:
-            print("Unsupported url: " + url)
+
+    # gfycat has a unique format, so it must be handled first
+    if "gfycat" in url:
+        file_extension = "mp4"
+        url_split = url.split('/')
+        url = url.replace(url_split[2], "thumbs." + url_split[2])
+        url += "-mobile." + file_extension
+        return url, file_extension
 
     # imgur uses .gif in url, but thats just for show, must convert to .mp4 to save it properly
     try:
         url_split = url.split('.')
+        file_extension = url_split[-1]
         if url_split[1] == "imgur" and (file_extension == "gif" or file_extension == "gifv"):
             file_extension = "mp4"
             url = url.replace(url_split[-1], file_extension)
+            return url, file_extension
     except UnboundLocalError:
         print("Unsupported url: " + url)
 
