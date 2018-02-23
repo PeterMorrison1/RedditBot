@@ -12,14 +12,16 @@ def authenticate():
 
 def fetch_requests(reddit):
     # Finds subreddit strings in the top-most level comments (ex: '/r/subredditname')
-    submission = reddit.submission(url='https://www.reddit.com/r/RedditBinge/comments/6us5kk/'
+    subreddit = reddit.submission(url='https://www.reddit.com/r/RedditBinge/comments/6us5kk/'
                                        'comment_in_this_thread_to_request_a_subreddit_to/')
-    history.save_requests(submission)
+    history.save_requests(subreddit)
 
 
+# uses praw to take the url of the top posts in a subreddit to download
 def top_post_urls(reddit, subreddit):
     count = 1
-    for submission in reddit.subreddit(subreddit).top(limit=50):
+    # number of posts to download is set by .top(limit=#). 5 is currently used for testing. Limit will be higher later
+    for submission in reddit.subreddit(subreddit).top(limit=5):
         title = submission.title
         url = submission.url
 

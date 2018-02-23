@@ -1,18 +1,20 @@
 import time
 import redditpraw
+import history
 
 
 def main():
-    # url = "https://i.redd.it/y8mhykcsdeh01.jpg"  # test var
-    subreddit = "aww"  # test var
-    # title = "test"  # test var
-    # test vars above will be removed when reading directly from subreddit is implemented
-
     reddit = redditpraw.authenticate()
     while True:
         redditpraw.fetch_requests(reddit)
-        redditpraw.top_post_urls(reddit, subreddit)
-        time.sleep(60)
+        subreddit = history.next_subreddit()
+
+        # use of break sets the var subreddit as None in history.next_subreddit(), meaning no new subs to download
+        if subreddit is not None:
+            redditpraw.top_post_urls(reddit, subreddit)
+        else:
+            print("No new subreddits to binge, sleeping...")
+            time.sleep(3600)
 
 
 if __name__ == "__main__":
