@@ -1,25 +1,20 @@
 import time
-import imagehandler
-import reddit_praw
+import redditpraw
+from history import next_subreddit
 
 
 def main():
-    url = "https://i.redd.it/y8mhykcsdeh01.jpg"  # test var
-    subreddit = "aww"  # test var
-    title = "test"  # test var
-    # test vars above will be removed when reading directly from subreddit is implemented
-
-    reddit = reddit_praw.authenticate()
+    reddit = redditpraw.authenticate()
     while True:
-        reddit_praw.fetch_requests(reddit)
+        redditpraw.fetch_requests(reddit)
+        subreddit = next_subreddit()
 
-        # skips imgur links that have a removed image
-        if "removed" in url:
-            print("Image was removed from imgur from post:" + title + "\n")
-            pass
+        # use of break sets the var subreddit as None in history.next_subreddit(), meaning no new subs to download
+        if subreddit is not None:
+            redditpraw.top_post_urls(reddit, subreddit)
         else:
-            imagehandler.download_image(url, subreddit, title)
-        time.sleep(60)
+            print("No new subreddits to binge, sleeping...")
+            time.sleep(3600)
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ import bs4
 
 
 # the url and file path are currently just for testing this works, will be changed next
-def download_image(url, subreddit, title):
+def download_image(url, subreddit, title, count):
     # get extension from url (gif,mp4,jpg) and turn imgur and gfycat gifs into the proper format
     url, file_extension = url_handler(url)
 
@@ -16,16 +16,23 @@ def download_image(url, subreddit, title):
     try:
         os.makedirs(file_path)
     except FileExistsError:
-        print("Directory exists already, continuing...")
+        pass
 
     # go to url and save the file to the file path
     response = requests.get(url)
     try:
+        # if there is an invalid response code then an exception is raised (ex: 404 code)
         response.raise_for_status()
-        with open(file_path + "\\" + title + "." + file_extension, 'wb') as f:
+        # save file, title of the file is top post order, title is saved in a file below
+        with open(file_path + "\\" + str(count) + "." + file_extension, 'wb') as f:
             f.write(response.content)
             f.close()
         print("Successful download!")
+        # saves the title of the post for uploading on imgur
+        with open(file_path + "\\titles.txt", 'a') as f:
+            f.write(title + "\n")
+            f.close()
+
     except requests.exceptions.HTTPError as e:
         print(str(e))
     except FileNotFoundError:
@@ -36,25 +43,23 @@ def url_handler(url):
     # splits url to get file extension
     file_extension = ""
     url = fetch_image_url(url)
-    try:
-        url_split = url.split('.')
-        file_extension = url_split[-1]
-    # gfycat uses different format from other media used on reddit, so this makes it into a requestable url
-    except IndexError:
-        if "gfycat" in url:
-            file_extension = "mp4"
-            url_split = url.split('/')
-            url = url.replace(url_split[2], "thumbs." + url_split[2])
-            url += "-mobile." + file_extension
-        else:
-            print("Unsupported url: " + url)
+
+    # gfycat has a unique format, so it must be handled first
+    if "gfycat" in url:
+        file_extension = "mp4"
+        url_split = url.split('/')
+        url = url.replace(url_split[2], "thumbs." + url_split[2])
+        url += "-mobile." + file_extension
+        return url, file_extension
 
     # imgur uses .gif in url, but thats just for show, must convert to .mp4 to save it properly
     try:
         url_split = url.split('.')
+        file_extension = url_split[-1]
         if url_split[1] == "imgur" and (file_extension == "gif" or file_extension == "gifv"):
             file_extension = "mp4"
             url = url.replace(url_split[-1], file_extension)
+            return url, file_extension
     except UnboundLocalError:
         print("Unsupported url: " + url)
 
@@ -62,12 +67,12 @@ def url_handler(url):
 
 
 def fetch_image_url(url):
-    supported_formats = [".gif", ".gifv", ".png", ".jpg", ".mp4"]
+    supported_formats = (".gif", ".gifv", ".png", ".jpg", ".mp4")
 
     # checks if the url is to the source image or not, if not it finds the source image
-    if any(s not in url for s in supported_formats):
-        response = requests.get(url)
-        soup = bs4.BeautifulSoup(response.content, "html.parser")
+    if not url.endswith(supported_formats):
+        response = requests.get(url).content
+        soup = bs4.BeautifulSoup(response, "html.parser")
         url_split_slash = url.split('/')
 
         # loops through all image sources in HTML and sets the correct image url
