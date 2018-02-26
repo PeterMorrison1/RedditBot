@@ -1,6 +1,6 @@
 import praw
-import history
-import imagehandler
+from history import save_requests
+from imagehandler import download_image
 
 
 def authenticate():
@@ -14,7 +14,7 @@ def fetch_requests(reddit):
     # Finds subreddit strings in the top-most level comments (ex: '/r/subredditname')
     subreddit = reddit.submission(url='https://www.reddit.com/r/RedditBinge/comments/6us5kk/'
                                        'comment_in_this_thread_to_request_a_subreddit_to/')
-    history.save_requests(subreddit)
+    save_requests(subreddit)
 
 
 # uses praw to take the url of the top posts in a subreddit to download
@@ -33,5 +33,5 @@ def top_post_urls(reddit, subreddit):
             print("This is a self post or video, skipping...")
             pass
         else:
-            imagehandler.download_image(url, subreddit, title, count)
+            download_image(url, subreddit, title, count)
         count += 1
