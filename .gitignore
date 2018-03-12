@@ -67,6 +67,11 @@ docs/_build/
 # PyBuilder
 target/
 
+# PyCharm
+.idea/workspace.xml
+.idea/dictionaries
+.idea/vcs.xml
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
@@ -99,6 +104,13 @@ ENV/
 
 # mypy
 .mypy_cache/
+<<<<<<< HEAD
 praw.ini
 imgur.ini
 .idea/dictionaries/Peter.xml
+=======
+finished_requests.txt
+imgur.ini
+praw.ini
+requests.txt
+>>>>>>> develop
