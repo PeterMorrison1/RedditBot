@@ -12,8 +12,8 @@ def authenticate():
 
 def fetch_requests(reddit):
     # Finds subreddit strings in the top-most level comments (ex: '/r/subredditname')
-    subreddit = reddit.submission(url='https://www.reddit.com/r/RedditBinge/comments/6us5kk/'
-                                       'comment_in_this_thread_to_request_a_subreddit_to/')
+    subreddit = reddit.submission(url='https://www.reddit.com/r/RedditBinge/comments/83rxy7/'
+                                      'comment_in_this_thread_to_request_a_subreddit_to/')
     save_requests(subreddit)
 
 
@@ -23,7 +23,7 @@ def top_post_urls(reddit, subreddit):
 
     # number of posts to download is set by .top(limit=#). 5 is currently used for testing. Limit will be higher later
     count = 1
-    for submission in reddit.subreddit(subreddit).top(limit=5):
+    for submission in reddit.subreddit(subreddit).top(limit=300):
         title = submission.title
         url = submission.url
 
@@ -38,3 +38,7 @@ def top_post_urls(reddit, subreddit):
             # count is to name the file, 1.jpg, 2.gif, 3.jpg, etc...
             download_image(url, subreddit, title, count)
         count += 1
+
+
+def submit_album(reddit, title, url):
+    reddit.subreddit('redditbinge').submit(title, url=url)

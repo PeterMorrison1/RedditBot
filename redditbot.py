@@ -50,6 +50,7 @@ def main():
                     # its actually 3600/50 = 72. But using 73 here JUST to be careful
                     # this also helps reduce the load on imgur servers
                     time.sleep(73)
+                # create a new submission to /r/RedditBinge with the album just created
 
         except IndexError:
             # when count goes above the amount of lines in titles.txt
@@ -63,6 +64,9 @@ def main():
             # so this is a good error!
             print("No new subreddits in the list, passing...")
             pass
+        finally:
+            # submits the subreddit album from imgur to /r/RedditBinge
+            redditpraw.submit_album(reddit_client, subreddit, a_url)
 
         print("No new subreddits to binge, sleeping...")
         time.sleep(3600)
