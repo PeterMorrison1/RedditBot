@@ -26,12 +26,10 @@ def download_image(url, subreddit, title, count):
         # save file, title of the file is top post order, title is saved in a file below
         with open(file_path + "\\" + str(count) + "." + file_extension, 'wb') as f:
             f.write(response.content)
-            f.close()
         print("Successful download!")
         # saves the title of the post for uploading on imgur
         with open(file_path + "\\titles.txt", 'a') as f:
             f.write(title + "\n")
-            f.close()
 
     except requests.exceptions.HTTPError as e:
         print(str(e))
@@ -44,22 +42,11 @@ def url_handler(url):
     file_extension = ""
     url = fetch_image_url(url)
 
-    # gfycat has a unique format, so it must be handled first
-    if "gfycat" in url:
-        file_extension = "mp4"
-        url_split = url.split('/')
-        url = url.replace(url_split[2], "thumbs." + url_split[2])
-        url += "-mobile." + file_extension
-        return url, file_extension
-
-    # imgur uses .gif in url, but thats just for show, must convert to .mp4 to save it properly
+    # sets file extension to whatever is after the last '.' (so blahblah.com/blah.jpg the .jpg part)
     try:
         url_split = url.split('.')
         file_extension = url_split[-1]
-        if url_split[1] == "imgur" and (file_extension == "gif" or file_extension == "gifv"):
-            file_extension = "mp4"
-            url = url.replace(url_split[-1], file_extension)
-            return url, file_extension
+
     except UnboundLocalError:
         print("Unsupported url: " + url)
 
@@ -67,6 +54,7 @@ def url_handler(url):
 
 
 def fetch_image_url(url):
+    # technically gifv and mp4 aren't supported now. But this function might be completely reworked later, so it stays
     supported_formats = (".gif", ".gifv", ".png", ".jpg", ".mp4")
 
     # checks if the url is to the source image or not, if not it finds the source image
@@ -81,7 +69,6 @@ def fetch_image_url(url):
             # imgur links in the HTML are missing the http: so don't remove this
             if "imgur" in image['src']:
                 url = "http:" + image['src']
-                break
             # this statement looks for matching urls endings between the source and container url
             # ex) The container url: 'http://www.livememe.com/apbp6e9'. The ending: 'apbp6e9'
             elif url_split_slash[-1] in image['src']:

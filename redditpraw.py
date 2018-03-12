@@ -17,15 +17,17 @@ def fetch_requests(reddit):
     save_requests(subreddit)
 
 
-# uses praw to take the url of the top posts in a subreddit to download
 def top_post_urls(reddit, subreddit):
-    count = 1
+    # uses praw to take the url of the top posts in a subreddit to download
+    # could use imgur api to download imgur specific submissions, HOWEVER, it costs api credits, so crawling it is...
+
     # number of posts to download is set by .top(limit=#). 5 is currently used for testing. Limit will be higher later
+    count = 1
     for submission in reddit.subreddit(subreddit).top(limit=5):
         title = submission.title
         url = submission.url
 
-        # skips imgur links that have a removed image
+        # skips imgur links that have a removed image. Needs work, still downloads some
         if "removed" in url:
             print("Image was removed from imgur from post:" + title + "\n")
             pass
@@ -33,5 +35,6 @@ def top_post_urls(reddit, subreddit):
             print("This is a self post or video, skipping...")
             pass
         else:
+            # count is to name the file, 1.jpg, 2.gif, 3.jpg, etc...
             download_image(url, subreddit, title, count)
         count += 1

@@ -104,5 +104,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+finished_requests.txt
+imgur.ini
 praw.ini
 requests.txt

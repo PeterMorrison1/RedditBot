@@ -7,6 +7,9 @@ to be updated.
 
 I hope someone finds this bot to be useful!
 
+Unfortunately gifv and mp4 aren't supported formats in the free imgur api, so they are excluded from the project after
+March 11, 2018. 
+
 # Tools/Libraries/etc Used
 
 These are the main tools/libraries/etc used in the project, all of which have a link provided just in case anyone needs
@@ -21,7 +24,9 @@ http://docs.python-requests.org/en/master/
 Beautiful Soup 4 is also used for finding image sources on pesky websites or from posts where the image isn't directly
 posted. https://www.crummy.com/software/BeautifulSoup/
 
-Imgur api is utilized to upload the images into albums onto imgur (Next to be implemented). https://apidocs.imgur.com/
+Imgur api is used to gain refresh and access tokens for use in ImgurPython. https://apidocs.imgur.com/
+
+ImgurPython is used to upload images. https://github.com/Imgur/imgurpython
 
 # Developer/Project info
 The project is made by The-Canuck

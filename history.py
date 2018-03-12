@@ -18,14 +18,19 @@ def save_requests(subreddit):
                     print("Recorded request: " + request)
                 else:
                     pass
-        f.close()
 
 
-# keeps record of subreddits that have been downloaded
+def read_post_title(file_path):
+    # reads and returns the post titles from titles.txt in a subreddit folder as a list
+    with open(file_path, 'r') as f:
+        post_title = f.readlines()
+    return post_title
+
+
 def save_finished_requests(subreddit):
+    # keeps record of subreddits that have been downloaded
     with open('finished_requests.txt', 'a') as f:
         f.write(subreddit + "\n")
-        f.close()
 
 
 # returns a subreddit to be downloaded, if it hasn't already been downloaded
@@ -34,7 +39,6 @@ def next_subreddit():
     # get list of subreddits already downloaded
     with open('finished_requests.txt', 'r') as f:
         finished_sub = f.read()
-        f.close()
 
     # returns request of lines in 'requests.txt' that doesn't match any lines in finished_'finished_requests.txt'
     with open('requests.txt', 'r') as f:
@@ -46,4 +50,3 @@ def next_subreddit():
             else:
                 print("Match: " + request)
         print("\n")
-        f.close()
