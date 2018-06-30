@@ -28,6 +28,28 @@ Imgur api is used to gain refresh and access tokens for use in ImgurPython. http
 
 ImgurPython is used to upload images. https://github.com/Imgur/imgurpython
 
+# Update
+
+This was originally intended to be a quick script but issues came up that I wasn't expecting. I plan to rework this script
+after my current project (Open-Podcast and possibly another small project before that). The rework will simply download the
+top N images from the entered subreddit when running the script, rather than re-upload them. The next version/rework won't require a reddit account!
+
+# How to run
+
+To run the script you must have a "praw.ini" file in your main directory of the project with this text in it then hit run:
+
+[Binger_Bot]
+
+username: [Insert reddit username]
+
+password: [Insert reddit password]
+
+client_id: [Insert reddit client id]
+
+client_secret: [Insert reddit client secret]
+
+
+
 # Developer/Project info
 The project is made by The-Canuck
 
